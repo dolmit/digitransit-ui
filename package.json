@@ -164,7 +164,7 @@
     "mocha": "5.2.0",
     "mock-local-storage": "1.1.8",
     "mockdate": "2.0.2",
-    "nightwatch": "0.9.20",
+    "nightwatch": "1.0.19",
     "node-sass": "4.11.0",
     "nodemon": "1.17.5",
     "nyc": "13.2.0",
