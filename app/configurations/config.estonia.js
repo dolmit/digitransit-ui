@@ -24,7 +24,7 @@ export default {
             default: `${MAP_URL}/map/v1/hsl-map/`,
             sv: `${MAP_URL}/map/v1/hsl-map-sv/`,
         },
-        STOP_MAP: `${MAP_URL}/map/v1/finland-stop-map/`,
+        STOP_MAP: `${MAP_URL}/map/v1/estonia-stop-map/`,
         CITYBIKE_MAP: `${MAP_URL}/map/v1/hsl-citybike-map/`,
         ALERTS: process.env.ALERTS_URL || `${API_URL}/realtime/service-alerts/v1`,
         FONT:
@@ -56,6 +56,11 @@ export default {
 
     searchParams: {},
     feedIds: [],
+
+    defaultMapCenter: {
+        lat: 59.43724,
+        lon: 24.74546,
+    },
 
     realTime: {
         /* sources per feed Id */
