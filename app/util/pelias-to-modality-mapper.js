@@ -25,10 +25,10 @@ const exampleConfig = {
       // localization example; showing locality (county) in label and name
       const localized = { ...feature };
       localized.properties.label = `${feature.properties.name}, ${
-        feature.properties.locality
+        feature.properties.region
       }`;
       localized.properties.name = `${feature.properties.name}, ${
-        feature.properties.locality
+        feature.properties.region
       }`;
       return localized;
     },
