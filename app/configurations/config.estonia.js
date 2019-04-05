@@ -65,7 +65,7 @@ export default {
     realTime: {
         /* sources per feed Id */
         estonia: {
-            mqtt: 'ws://localhost:1884',
+            mqtt: 'wss://localhost:1884',
             agency: 'Tallinna TA',
             routeSelector: function selectRoute(routePageProps) {
                 const route = routePageProps.route.gtfsId.split(':');
