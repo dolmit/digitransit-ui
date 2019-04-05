@@ -1,8 +1,7 @@
 const CONFIG = 'estonia';
 const API_URL = process.env.API_URL || 'https://dev-api.digitransit.fi';
 const GEOCODING_BASE_URL = process.env.GEOCODING_BASE_URL || `${API_URL}/geocoding/v1`;
-const MAP_URL =
-    process.env.MAP_URL || 'https://digitransit-dev-cdn-origin.azureedge.net';
+const MAP_URL = process.env.MAP_URL || 'https://digitransit-dev-cdn-origin.azureedge.net';
 const APP_PATH = process.env.APP_CONTEXT || '';
 const { SENTRY_DSN } = process.env;
 const PORT = process.env.PORT || 8080;
@@ -65,7 +64,7 @@ export default {
     realTime: {
         /* sources per feed Id */
         estonia: {
-            mqtt: 'wss://localhost:1884',
+            mqtt: 'wss://uvn-233-169.ams01.zonevs.eu:4436',
             agency: 'Tallinna TA',
             routeSelector: function selectRoute(routePageProps) {
                 const route = routePageProps.route.gtfsId.split(':');
