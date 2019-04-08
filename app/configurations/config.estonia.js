@@ -26,6 +26,7 @@ export default {
         },
         STOP_MAP: `${MAP_URL}/map/v1/estonia-stop-map/`,
         CITYBIKE_MAP: `${MAP_URL}/map/v1/hsl-citybike-map/`,
+        PARK_AND_RIDE_MAP: `${MAP_URL}/map/v1/estonia-parkandride-bikestop-map/`,
         ALERTS: process.env.ALERTS_URL || `${API_URL}/realtime/service-alerts/v1`,
         FONT:
             'https://fonts.googleapis.com/css?family=Lato:300,400,900%7CPT+Sans+Narrow:400,700',
@@ -86,12 +87,16 @@ export default {
         suggestions: {
             useTransportIcons: false,
         },
-        usePeliasStops: false,
+        usePeliasStops: true,
         mapPeliasModality: false,
         peliasMapping: {},
         peliasLayer: null,
         peliasLocalization: null,
-        minimalRegexp: new RegExp('.{2,}'),
+        /* identify searches for route numbers/labels: bus | train | metro */
+        lineRegexp: new RegExp(
+            '(^[0-9]+[a-z]?$|^[yuleapinkrtdz]$|(^m[12]?b?$))',
+            'i',
+        ),
     },
 
     nearbyRoutes: {

@@ -38,3 +38,4 @@ More information about [testing](docs/Tests.md).
 * [Navigation](docs/Navigation.md)
 * [Themes](docs/Themes.md)
 * [GeoJSON](docs/GeoJson.md)
+* [Eesti paigaldus](docs/Estonia.md)
