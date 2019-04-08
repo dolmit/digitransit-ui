@@ -55,7 +55,7 @@ export default {
     shortName: 'Digitransit',
 
     searchParams: {},
-    feedIds: [],
+    feedIds: ['estonia'],
 
     defaultMapCenter: {
         lat: 59.43724,
@@ -92,6 +92,7 @@ export default {
         peliasMapping: {},
         peliasLayer: null,
         peliasLocalization: null,
+        minimalRegexp: new RegExp('.+'),
         /* identify searches for route numbers/labels: bus | train | metro */
         lineRegexp: new RegExp(
             '(^[0-9]+[a-z]?$|^[yuleapinkrtdz]$|(^m[12]?b?$))',
