@@ -260,7 +260,15 @@ export function drawTerminalIcon(tile, geom, type, name) {
 }
 
 export function drawParkAndRideIcon(tile, geom, width, height) {
-  getImageFromSpriteCache('icon-icon_park-and-ride', width, height).then(
+  getImageFromSpriteCache('icon-icon_car_park-withoutBox', width, height).then(
+    image => {
+      drawIconImage(image, tile, geom, width, height);
+    },
+  );
+}
+
+export function drawParkAndRideBicycleIcon(tile, geom, width, height) {
+  getImageFromSpriteCache('icon-icon_bicycle', width, height).then(
     image => {
       drawIconImage(image, tile, geom, width, height);
     },

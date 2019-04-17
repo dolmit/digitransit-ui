@@ -62,6 +62,11 @@ export default {
         lon: 24.74546,
     },
 
+    parkAndRide: {
+        showParkAndRide: true,
+        parkAndRideMinZoom: 14,
+    },
+
     realTime: {
         /* sources per feed Id */
         estonia: {
