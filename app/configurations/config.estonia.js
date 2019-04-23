@@ -536,48 +536,6 @@ export default {
     routeTimetableUrlResolver: {},
 
     aboutThisService: {
-        fi: [
-            {
-                header: 'Tietoja palvelusta',
-                paragraphs: [
-                    'Palvelu kattaa joukkoliikenteen, kävelyn, pyöräilyn ja yksityisautoilun rajatuilta osin. Palvelu perustuu Digitransit-palvelualustaan.',
-                ],
-            },
-            {
-                header: 'Digitransit-palvelualusta',
-                paragraphs: [
-                    'Digitransit-palvelualusta on HSL:n ja Traficomin kehittämä avoimen lähdekoodin reititystuote.',
-                ],
-            },
-            {
-                header: 'Tietolähteet',
-                paragraphs: [
-                    'Kartat, tiedot kaduista, rakennuksista, pysäkkien sijainnista ynnä muusta tarjoaa © OpenStreetMap contributors. Osoitetiedot tuodaan Väestörekisterikeskuksen rakennustietorekisteristä. Joukkoliikenteen reitit ja aikataulut ladataan Traficomin valtakunnallisesta joukkoliikenteen tietokannasta.',
-                ],
-            },
-        ],
-
-        sv: [
-            {
-                header: 'Om tjänsten',
-                paragraphs: [
-                    'Reseplaneraren täcker med vissa begränsningar kollektivtrafik, promenad, cykling samt privatbilism. Tjänsten baserar sig på Digitransit-plattformen.',
-                ],
-            },
-            {
-                header: 'Digitransit-plattformen',
-                paragraphs: [
-                    'Digitransit-plattformen är en öppen programvara utvecklad av HRT och Traficom.',
-                ],
-            },
-            {
-                header: 'Datakällor',
-                paragraphs: [
-                    'Kartor, gator, byggnader, hållplatser och dylik information erbjuds av © OpenStreetMap contributors. Addressinformation hämtas från BRC:s byggnadsinformationsregister. Kollektivtrafikens rutter och tidtabeller hämtas från Traficoms landsomfattande kollektivtrafiksdatabas.',
-                ],
-            },
-        ],
-
         en: [
             {
                 header: 'About this service',
@@ -598,9 +556,66 @@ export default {
                 ],
             },
         ],
-        nb: {},
-        fr: {},
-        de: {},
+        et: [
+            {
+                header: 'Teenusest',
+                paragraphs: [
+                    'Teenus hõlmab ühistransporti, kõndimist, jalgrattasõitu ja mõnda isiklikku auto kasutamist. Teenus on ehitatud Digitransit platvormil.',
+                ],
+            },
+            {
+                header: 'Digitransit platvorm',
+                paragraphs: [
+                    'Digitransit teenindusplatvorm on avatud lähtekoodiga marsruutimisplatvorm, mille on välja töötanud HSL ja Traficom.',
+                ],
+            },
+            {
+                header: 'Andmeallikad',
+                paragraphs: [
+                    "Kaardid, tänavad, hooned, peatuste asukohad jne on antud © OpenStreetMap kasutajate poolt. Aadressiandmed saadakse Soome Rahvastikuregistri Keskuse Elukoha ja Kinnistute registrist. Ühistranspordiliinid ja sõiduplaanid laaditakse alla riiklikust ühistranspordi andmebaasist Traficom.",
+                ],
+            },
+        ],
+        fi: [
+            {
+                header: 'Tietoja palvelusta',
+                paragraphs: [
+                    'Palvelu kattaa joukkoliikenteen, kävelyn, pyöräilyn ja yksityisautoilun rajatuilta osin. Palvelu perustuu Digitransit-palvelualustaan.',
+                ],
+            },
+            {
+                header: 'Digitransit-palvelualusta',
+                paragraphs: [
+                    'Digitransit-palvelualusta on HSL:n ja Traficomin kehittämä avoimen lähdekoodin reititystuote.',
+                ],
+            },
+            {
+                header: 'Tietolähteet',
+                paragraphs: [
+                    'Kartat, tiedot kaduista, rakennuksista, pysäkkien sijainnista ynnä muusta tarjoaa © OpenStreetMap contributors. Osoitetiedot tuodaan Väestörekisterikeskuksen rakennustietorekisteristä. Joukkoliikenteen reitit ja aikataulut ladataan Traficomin valtakunnallisesta joukkoliikenteen tietokannasta.',
+                ],
+            },
+        ],
+        ru: [
+            {
+                header: 'Об услуге',
+                paragraphs: [
+                    'Услуга распространяется на общественный транспорт, прогулку пешком и велосипедные прогулки, а также на частном автомобиле. Сервис построен на платформе Digitransit.',
+                ],
+            },
+            {
+                header: 'Платформа Digitransit',
+                paragraphs: [
+                    'Сервисная платформа Digitransit - это платформа маршрутизации с открытым исходным кодом, разработанная компаниями HSL и Traficom. \',',
+                ],
+            },
+            {
+                header: 'Источники данных',
+                paragraphs: [
+                    "Карты, улицы, здания, местоположения остановок и т. д. предоставлены ️ участниками © ️OpenStreetMap. Адресные данные извлекаются из Системы Финского регистра народонаселения. Маршруты и расписание общественного транспорта загружаются из национальной базы данных общественного транспорта Traficom.",
+                ],
+            },
+        ],
     },
 
     staticMessages: [],
