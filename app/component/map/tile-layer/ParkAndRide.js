@@ -5,18 +5,18 @@ import isEmpty from 'lodash/isEmpty';
 import pick from 'lodash/pick';
 import Protobuf from 'pbf';
 
-import { drawParkAndRideIcon } from '../../../util/mapIconUtils';
+import { drawParkAndRideIcon, drawParkAndRideBicycleIcon } from '../../../util/mapIconUtils';
 import { Contour } from '../../../util/geo-utils';
 import { isBrowser } from '../../../util/browser';
 
-const showFacilities = 17;
+const showFacilities = 14;
 
 export default class ParkAndRide {
   constructor(tile, config) {
     this.tile = tile;
     this.config = config;
     const scaleratio = (isBrowser && window.devicePixelRatio) || 1;
-    this.width = 24 * scaleratio;
+    this.width = 12 * scaleratio;
     this.height = 12 * scaleratio;
     this.promise = this.getPromise();
   }
@@ -52,7 +52,7 @@ export default class ParkAndRide {
                 realtime
               }
             }`,
-                { ids: JSON.parse(feature.properties.facilityIds) },
+                { ids: JSON.parse(feature.properties.facilityIds && feature.properties.facilityIds || "[]") },
               );
               Relay.Store.primeCache(
                 {
@@ -61,16 +61,25 @@ export default class ParkAndRide {
                 readyState => {
                   if (readyState.done) {
                     const result = compact(Relay.Store.readQuery(query));
-                    if (!isEmpty(result)) {
+                    if (!isEmpty(result) || true) { // XXX
                       feature.properties.facilities = result;
                       [[feature.geom]] = feature.loadGeometry();
-                      this.features.push(pick(feature, ['geom', 'properties']));
-                      drawParkAndRideIcon(
-                        this.tile,
-                        feature.geom,
-                        this.width,
-                        this.height,
-                      );
+                      // FIXME this.features.push(pick(feature, ['geom', 'properties']));
+                      if (feature.properties.amenity == "bicycle_parking") {
+                        drawParkAndRideBicycleIcon(
+                          this.tile,
+                          feature.geom,
+                          this.width,
+                          this.height,
+                        );
+                      } else {
+                        drawParkAndRideIcon(
+                          this.tile,
+                          feature.geom,
+                          this.width,
+                          this.height,
+                        );
+                      }
                     }
                   }
                 },
@@ -96,7 +105,7 @@ export default class ParkAndRide {
                 realtime
               }
             }`,
-                { id: feature.id },
+                { id: feature.id || "undefined" },
               );
               Relay.Store.primeCache(
                 {
@@ -105,18 +114,31 @@ export default class ParkAndRide {
                 readyState => {
                   if (readyState.done) {
                     const result = compact(Relay.Store.readQuery(query));
-                    if (result != null && result.length !== 0) {
+                    if (result != null && result.length !== 0 || true) { // XXX
                       feature.properties.facility = result;
-                      feature.geom = new Contour(
-                        feature.loadGeometry()[0],
-                      ).centroid();
-                      this.features.push(feature);
-                      drawParkAndRideIcon(
-                        this.tile,
-                        feature.geom,
-                        this.width,
-                        this.height,
-                      );
+                      if (feature.type === 1) { // Point
+                        [[feature.geom]] = feature.loadGeometry();
+                      } else {
+                        feature.geom = new Contour(
+                          feature.loadGeometry()[0],
+                        ).centroid();
+                      }
+                      // FIXME this.features.push(feature);
+                      if (feature.properties.amenity == "bicycle_parking") {
+                        drawParkAndRideBicycleIcon(
+                          this.tile,
+                          feature.geom,
+                          this.width,
+                          this.height,
+                        );
+                      } else {
+                        drawParkAndRideIcon(
+                          this.tile,
+                          feature.geom,
+                          this.width,
+                          this.height,
+                        );
+                      }
                     }
                   }
                 },
