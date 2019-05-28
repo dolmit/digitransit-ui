@@ -38,11 +38,11 @@ export default {
     },
 
     APP_PATH: `${APP_PATH}`,
-    title: 'Reittihaku',
+    title: 'peatus.ee',
 
     textLogo: false,
     // Navbar logo
-    logo: 'default/digitransit-logo.png',
+    logo: 'estonia/logo_1_valge.png',
 
     contactName: {
         sv: 'Digitransit',
@@ -292,10 +292,10 @@ export default {
         default: 18,
     },
 
-    appBarLink: { name: 'Digitransit', href: 'https://www.digitransit.fi/' },
+    appBarLink: { name: 'Maanteeamet', href: 'https://www.mnt.ee/' },
 
     colors: {
-        primary: '#00AFFF',
+        primary: '#006E12',
     },
 
     sprites: 'svg-sprite.default.svg',
@@ -492,7 +492,7 @@ export default {
 
     footer: {
         content: [
-            { label: `© HSL, Traficom ${YEAR}` },
+            { label: `© Maanteeamet ${YEAR}` },
             {},
             {
                 name: 'footer-feedback',
