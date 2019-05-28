@@ -4,6 +4,7 @@
 @import '../default/theme';
 
 /* Operator palette */
+$estonia-green: #006e12;
 $hsl-blue: #007ac9;
 $hsl-dark-blue: #0062a1;
 $hsl-pink: #f092cd;
@@ -14,7 +15,7 @@ $hsl-rail-red: #8c4799;
 $hsl-ferry-blue: #00b9e4;
 
 /* Application palette */
-$primary-color: $hsl-blue;
+$primary-color: $estonia-green;
 $secondary-color: $hsl-dark-blue;
 $favourite-color: $hsl-pink;
 $hilight-color: $hsl-pink;
