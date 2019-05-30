@@ -145,14 +145,17 @@ export function getLabel(properties) {
 }
 
 export function getAddressLabel(suggestion) {
-    let label = suggestion.label.replace(
-        new RegExp(`${escapeRegExp(suggestion.name)}(,)?( )?`),
-        '',
-    );
+    let label = "";
     if (suggestion.locality) {
-        label += ", " + suggestion.locality + ", ";
+        label += suggestion.locality + ", ";
         if (suggestion.neighbourhood) label += suggestion.neighbourhood + ", ";
-    } else if (suggestion.region) label += suggestion.region + ", ";
+    } else if (suggestion.region) {
+        label = suggestion.label.replace(
+            new RegExp(`${escapeRegExp(suggestion.name)}(,)?( )?`),
+            '',
+        );
+        label += suggestion.region + ", ";
+    }
     return label.replace(/,\s*$/, "");
 }
 
