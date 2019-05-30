@@ -144,10 +144,14 @@ export function getLabel(properties) {
 }
 
 export function getAddressLabel(suggestion) {
-    let label = "";
-    if (suggestion.region) label += suggestion.region + ", ";
-    if (suggestion.locality) label += suggestion.locality + ", ";
-    if (suggestion.neighbourhood) label += suggestion.neighbourhood + ", ";
+    let label = suggestion.label.replace(
+        new RegExp(`${escapeRegExp(suggestion.name)}(,)?( )?`),
+        '',
+    );
+    if (suggestion.locality) {
+        label += ", " + suggestion.locality + ", ";
+        if (suggestion.neighbourhood) label += suggestion.neighbourhood + ", ";
+    } else if (suggestion.region) label += suggestion.region + ", ";
     return label.replace(/,\s*$/, "");
 }
 
