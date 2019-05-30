@@ -72,6 +72,7 @@ export const getNameLabel = memoize(
                 <span className="suggestion-type">
                   &nbsp;-&nbsp;
                     <FormattedMessage id="route" defaultMessage="Route"/>
+                    &nbsp;({suggestion.region})
                 </span>
               </span>,
                         suggestion.longName,
