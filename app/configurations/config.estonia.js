@@ -300,7 +300,7 @@ export default {
     appBarLink: { name: 'Maanteeamet', href: 'https://www.mnt.ee/' },
 
     colors: {
-        primary: '#006E12',
+        primary: '#006EB5',
     },
 
     sprites: 'svg-sprite.default.svg',
