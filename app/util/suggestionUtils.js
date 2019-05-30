@@ -85,9 +85,7 @@ export const getNameLabel = memoize(
             case 'address':
                 return [
                     suggestion.name,
-                    suggestion.region,
-                    suggestion.locality,
-                    suggestion.neighbourhood,
+                    getAddressLabel(suggestion)
                 ];
             case 'favouriteStation':
             case 'favouriteStop':
@@ -143,6 +141,14 @@ export function getLabel(properties) {
                 ? parts.join(', ')
                 : parts[1] || parts[0];
     }
+}
+
+export function getAddressLabel(suggestion) {
+    let label = "";
+    if (suggestion.region) label += suggestion.region + ", ";
+    if (suggestion.locality) label += suggestion.locality + ", ";
+    if (suggestion.neighbourhood) label += suggestion.neighbourhood + ", ";
+    return label.replace(/,\s*$/, "");
 }
 
 export function suggestionToLocation(item) {
