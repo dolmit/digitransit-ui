@@ -92,6 +92,10 @@ $content-background-color: $background-color;
 
 #skip-to-content-link {
   height: 0px;
+
+  @media print {
+    display: none;
+  }
 }
 
 .flex-horizontal {
@@ -113,7 +117,7 @@ $content-background-color: $background-color;
     margin: 0px 2px;
     &.selected {
       border-radius: 3px;
-      background-color: hsla(0,0%,100%,.15);
+      background-color: hsla(0, 0%, 100%, 0.15);
     }
   }
 }
@@ -359,6 +363,21 @@ section.content {
       flex-grow: 1;
       width: 60%;
     }
+
+    &.banner-disruption {
+      background: $disruption-color;
+
+      .icon {
+        color: $disruption-color;
+        fill: white;
+      }
+
+      .message-bar-content,
+      a,
+      h2 {
+        color: white;
+      }
+    }
   }
 
   span {
@@ -381,6 +400,12 @@ section.content {
   a {
     @include font-medium;
     padding: 0 4px;
+  }
+
+  svg.message-bar-link-icon {
+    margin: 0 0 0 $padding-small;
+    position: relative;
+    top: 0.125em;
   }
 }
 

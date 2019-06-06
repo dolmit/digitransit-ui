@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 const CONFIG = 'hsl';
 const API_URL = process.env.API_URL || 'https://dev-api.digitransit.fi';
 const MAP_URL =
@@ -5,8 +6,7 @@ const MAP_URL =
 const APP_DESCRIPTION = 'Helsingin seudun liikenteen Reittiopas.';
 const YEAR = 1900 + new Date().getYear();
 
-// route timetable data needs to be up-to-date before this is enabled
-// const HSLRouteTimetable = require('./timetableConfigUtils').default.HSLRoutes;
+const HSLRouteTimetable = require('./timetableConfigUtils').default.HSLRoutes;
 
 export default {
   CONFIG,
@@ -71,7 +71,7 @@ export default {
     primary: '#007ac9',
   },
 
-  sprites: 'svg-sprite.hsl.svg',
+  sprites: 'assets/svg-sprite.hsl.svg',
 
   appBarLink: { name: 'HSL.fi', href: 'https://www.hsl.fi/' },
 
@@ -100,8 +100,6 @@ export default {
   meta: {
     description: APP_DESCRIPTION,
   },
-
-  useTicketIcons: false,
 
   transportModes: {
     airplane: {
@@ -209,10 +207,14 @@ export default {
         [24.825623, 60.150484],
         [24.847359, 60.14129],
         [24.878784, 60.135211],
-        [24.917694, 60.135829],
-        [24.946839, 60.144845],
-        [24.970082, 60.153435],
-        [24.981806, 60.168956],
+        [24.925075, 60.144717],
+        [24.932484, 60.151908],
+        [24.951109, 60.154663],
+        [24.957653, 60.152834],
+        [24.965618, 60.155976],
+        [24.959649, 60.161454],
+        [24.968876, 60.162671],
+        [24.981462, 60.167184],
         [24.975605, 60.175104],
         [24.981962, 60.177926],
         [24.993498, 60.17687],
@@ -324,8 +326,7 @@ export default {
   queryMaxAgeDays: 14, // to drop too old route request times from entry url
 
   routeTimetables: {
-    // route timetable data needs to be up-to-date before this is enabled
-    //  HSL: HSLRouteTimetable,
+    HSL: HSLRouteTimetable,
   },
 
   aboutThisService: {
@@ -376,65 +377,19 @@ export default {
   },
 
   showTicketInformation: true,
-  ticketLink:
-    'https://www.hsl.fi/liput-ja-hinnat?utm_campaign=omat-palvelut&utm_source=reittiopas&utm_medium=referral&utm_content=nain-ostat-lipun',
-  showTicketSelector: true,
-
-  fares: [
-    'HSL:hki',
-    'HSL:esp',
-    'HSL:van',
-    'HSL:ker',
-    'HSL:kir',
-    'HSL:seu',
-    'HSL:lse',
-    'HSL:kse',
-  ],
-
-  // mapping (string, lang) from OTP fare identifiers to human readable form
-  fareMapping: function mapHslFareId(fareId, lang) {
-    const names = {
-      fi: {
-        esp: 'Espoo ja Kauniainen',
-        hki: 'Helsinki',
-        ker: 'Kerava-Sipoo-Tuusula',
-        kir: 'Kirkkonummi-Siuntio',
-        kse: 'Lähiseutu 3',
-        lse: 'Lähiseutu 2',
-        seu: 'Seutulippu',
-        van: 'Vantaa',
+  ticketInformation: {
+    primaryAgencyName: 'HSL',
+    trackingParameters: {
+      'HSL:HSL': {
+        utm_campaign: 'omat-palvelut',
+        utm_content: 'nain-ostat-lipun',
+        utm_medium: 'referral',
+        utm_source: 'reittiopas',
       },
-      en: {
-        esp: 'Espoo and Kauniainen',
-        hki: 'Helsinki',
-        ker: 'Kerava-Sipoo-Tuusula',
-        kir: 'Kirkkonummi-Siuntio',
-        kse: 'Region three zone',
-        lse: 'Region two zone',
-        seu: 'Regional ticket',
-        van: 'Vantaa',
-      },
-      sv: {
-        esp: 'Esbo och Grankulla',
-        hki: 'Helsingfors',
-        ker: 'Kervo-Sibbo-Tusby',
-        kir: 'Kyrkslätt-Sjundeå',
-        kse: 'Närregion 3',
-        lse: 'Närregion 2',
-        seu: 'Regionbiljett',
-        van: 'Vanda',
-      },
-    };
-    const mappedLang = names[lang] ? lang : 'fi';
-    if (fareId && fareId.substring) {
-      const zone = fareId.substring(
-        fareId.indexOf(':') + 1,
-        fareId.indexOf(':') + 4,
-      );
-      return names[mappedLang][zone] || '';
-    }
-    return '';
+    },
   },
+
+  showTicketSelector: true,
 
   staticMessages: [
     {
@@ -497,18 +452,18 @@ export default {
   ],
   staticMessagesUrl: 'https://yleisviesti.hsldev.com/',
   geoJson: {
-    // layers: [
-    //   {
-    //     name: {
-    //       fi: 'Maksuvyöhykkeet',
-    //       sv: 'Resezoner',
-    //       en: 'Ticket zones',
-    //     },
-    //     url: '/hsl_zone_lines.json',
-    //   },
-    // ],
+    layers: [
+      {
+        name: {
+          fi: 'Vyöhykkeet',
+          sv: 'Zoner',
+          en: 'Zones',
+        },
+        url: '/assets/geojson/hsl_zone_lines_20190508.geojson',
+      },
+    ],
     zones: {
-      url: '/hsl_zone_areas.json',
+      url: '/assets/geojson/hsl_zone_areas_20190508.geojson',
     },
   },
   mapLayers: {
@@ -520,6 +475,86 @@ export default {
         Myyntipiste: 'salesPoint',
         'R-kioski': 'salesPoint',
       },
+    },
+  },
+
+  fares: [
+    'HSL:AB',
+    'HSL:BC',
+    'HSL:CD',
+    'HSL:D',
+    'HSL:ABC',
+    'HSL:BCD',
+    'HSL:ABCD',
+  ],
+
+  // mapping (string, lang) from OTP fare identifiers to human readable form
+  // in the new HSL zone model, just strip off the prefix 'HSL:'
+  fareMapping: function mapHslFareId(fareId) {
+    return fareId && fareId.substring
+      ? fareId.substring(fareId.indexOf(':') + 1)
+      : '';
+  },
+
+  itinerary: {
+    showZoneLimits: true,
+  },
+
+  stopCard: {
+    header: {
+      showZone: true,
+    },
+  },
+
+  useTicketIcons: true,
+
+  cityBike: {
+    showCityBikes: true,
+    networks: {
+      samocat: {
+        icon: 'scooter',
+        name: {
+          fi: 'Vuosaari',
+          sv: 'Nordsjö',
+          en: 'Vuosaari',
+        },
+        type: 'scooter',
+        url: {
+          fi: 'https://www.hsl.fi/potkulaudat',
+          sv: 'https://www.hsl.fi/sv/stadssparkcyklar',
+          en: 'https://www.hsl.fi/en/cityscooters',
+        },
+      },
+      smoove: {
+        icon: 'citybike',
+        name: {
+          fi: 'Helsinki ja Espoo',
+          sv: 'Helsingfors och Esbo',
+          en: 'Helsinki and Espoo',
+        },
+        type: 'citybike',
+        url: {
+          fi: 'https://www.hsl.fi/kaupunkipyorat',
+          sv: 'https://www.hsl.fi/sv/stadscyklar',
+          en: 'https://www.hsl.fi/en/citybikes',
+        },
+      },
+      /*
+      vantaa: {
+        icon: 'citybike-secondary',
+        name: {
+          fi: 'Vantaa',
+          sv: 'Vanda',
+          en: 'Vantaa',
+        },
+        type: 'citybike',
+        url: {
+          fi: 'https://www.hsl.fi/kaupunkipyorat',
+          sv: 'https://www.hsl.fi/sv/stadscyklar',
+          en: 'https://www.hsl.fi/en/citybikes',
+        },
+      },
+      */
     },
   },
 };

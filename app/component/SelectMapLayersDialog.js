@@ -186,7 +186,10 @@ class SelectMapLayersDialog extends React.Component {
             <div className="checkbox-grouping">
               {config.geoJson.layers.map(gj => (
                 <Checkbox
-                  checked={geoJson[gj.url] !== false}
+                  checked={
+                    (gj.isOffByDefault && geoJson[gj.url] === true) ||
+                    (!gj.isOffByDefault && geoJson[gj.url] !== false)
+                  }
                   defaultMessage={gj.name[lang]}
                   key={gj.url}
                   onChange={e => {
@@ -203,20 +206,23 @@ class SelectMapLayersDialog extends React.Component {
   };
 
   render() {
+    const { config, lang, isOpen, mapLayers } = this.props;
+    const tooltip =
+      config.mapLayers &&
+      config.mapLayers.tooltip &&
+      config.mapLayers.tooltip[lang];
+
     return (
       <BubbleDialog
         contentClassName="select-map-layers-dialog-content"
         header="select-map-layers-header"
-        id="mapLayerSelector"
         icon="map-layers"
-        isOpen={this.props.isOpen}
+        id="mapLayerSelector"
         isFullscreenOnMobile
+        isOpen={isOpen}
+        tooltip={tooltip}
       >
-        {this.renderContents(
-          this.props.mapLayers,
-          this.props.config,
-          this.props.lang,
-        )}
+        {this.renderContents(mapLayers, config, lang)}
       </BubbleDialog>
     );
   }
@@ -255,6 +261,13 @@ const mapLayersConfigShape = PropTypes.shape({
     rail: transportModeConfigShape,
     subway: transportModeConfigShape,
     tram: transportModeConfigShape,
+  }),
+  mapLayers: PropTypes.shape({
+    tooltip: PropTypes.shape({
+      en: PropTypes.string,
+      fi: PropTypes.string.isRequired,
+      sv: PropTypes.string,
+    }),
   }),
 });
 

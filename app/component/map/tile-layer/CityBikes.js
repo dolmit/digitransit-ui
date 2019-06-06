@@ -5,11 +5,10 @@ import pick from 'lodash/pick';
 
 import { isBrowser } from '../../../util/browser';
 import {
-  drawRoundIcon,
-  drawCitybikeIcon,
-  drawCitybikeOffIcon,
   drawAvailabilityBadge,
   drawAvailabilityValue,
+  drawIcon,
+  drawRoundIcon,
   getMapIconScale,
 } from '../../../util/mapIconUtils';
 
@@ -17,6 +16,9 @@ import {
   BIKESTATION_ON,
   BIKESTATION_OFF,
   BIKESTATION_CLOSED,
+  getCityBikeNetworkConfig,
+  getCityBikeNetworkIcon,
+  getCityBikeNetworkId,
 } from '../../../util/citybikes';
 
 const timeOfLastFetch = {};
@@ -76,6 +78,7 @@ class CityBikes {
       bikeRentalStation(id: $id) {
         bikesAvailable
         spacesAvailable
+        networks
         state
       }
     }`,
@@ -103,13 +106,26 @@ class CityBikes {
             return drawRoundIcon(this.tile, geom, mode);
           }
 
+          const iconName = getCityBikeNetworkIcon(
+            getCityBikeNetworkConfig(
+              getCityBikeNetworkId(result.networks),
+              this.config,
+            ),
+          );
+
           if (result.state === BIKESTATION_CLOSED) {
             // Draw just plain grey base icon
-            return drawCitybikeOffIcon(this.tile, geom, this.citybikeImageSize);
+            return drawIcon(
+              `${iconName}_off`,
+              this.tile,
+              geom,
+              this.citybikeImageSize,
+            );
           }
 
           if (result.state === BIKESTATION_OFF) {
-            return drawCitybikeOffIcon(
+            return drawIcon(
+              `${iconName}_off`,
               this.tile,
               geom,
               this.citybikeImageSize,
@@ -126,30 +142,20 @@ class CityBikes {
           }
 
           if (result.state === BIKESTATION_ON) {
-            return drawCitybikeIcon(
+            return drawIcon(
+              iconName,
               this.tile,
               geom,
               this.citybikeImageSize,
             ).then(() => {
-              if (result.bikesAvailable === 0) {
-                drawAvailabilityBadge(
-                  'no',
-                  this.tile,
-                  geom,
-                  this.citybikeImageSize,
-                  this.availabilityImageSize,
-                  this.scaleratio,
-                );
-              } else {
-                drawAvailabilityValue(
-                  this.tile,
-                  geom,
-                  result.bikesAvailable,
-                  this.citybikeImageSize,
-                  this.availabilityImageSize,
-                  this.scaleratio,
-                );
-              }
+              drawAvailabilityValue(
+                this.tile,
+                geom,
+                result.bikesAvailable,
+                this.citybikeImageSize,
+                this.availabilityImageSize,
+                this.scaleratio,
+              );
             });
           }
         }

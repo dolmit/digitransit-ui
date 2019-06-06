@@ -2,7 +2,7 @@ import cx from 'classnames';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, intlShape } from 'react-intl';
 import { Link } from 'react-router';
 
 import RouteNumber from './RouteNumber';
@@ -15,9 +15,11 @@ import PlatformNumber from './PlatformNumber';
 import ItineraryCircleLine from './ItineraryCircleLine';
 import { PREFIX_ROUTES } from '../util/path';
 import {
+  getActiveLegAlertSeverityLevel,
   legHasCancelation,
   tripHasCancelationForStop,
 } from '../util/alertUtils';
+import ExternalLink from './ExternalLink';
 
 class TransitLeg extends React.Component {
   constructor(props) {
@@ -102,9 +104,11 @@ class TransitLeg extends React.Component {
 
   renderMain = () => {
     const { children, focusAction, index, leg, mode } = this.props;
+    const { config, intl } = this.context;
+
     const originalTime = leg.realTime &&
       leg.departureDelay &&
-      leg.departureDelay >= this.context.config.itinerary.delayThreshold && [
+      leg.departureDelay >= config.itinerary.delayThreshold && [
         <br key="br" />,
         <span key="time" className="original-time">
           {moment(leg.startTime)
@@ -157,7 +161,6 @@ class TransitLeg extends React.Component {
       );
     };
 
-    const isCanceled = legHasCancelation(leg);
     return (
       <div key={index} className="row itinerary-row">
         <div className="small-2 columns itinerary-time-column">
@@ -171,15 +174,15 @@ class TransitLeg extends React.Component {
             }
           >
             <div className="itinerary-time-column-time">
-              <span className={cx({ canceled: isCanceled })}>
+              <span className={cx({ canceled: legHasCancelation(leg) })}>
                 {moment(leg.startTime).format('HH:mm')}
               </span>
               {originalTime}
             </div>
             <RouteNumber //  shouldn't this be a route number container instead???
+              alertSeverityLevel={getActiveLegAlertSeverityLevel(leg)}
               mode={mode.toLowerCase()}
               color={leg.route ? `#${leg.route.color}` : 'currentColor'}
-              hasDisruption={isCanceled}
               text={leg.route && leg.route.shortName}
               realtime={leg.realTime}
               vertical
@@ -222,6 +225,34 @@ class TransitLeg extends React.Component {
               stops={leg.intermediatePlaces}
             />
           </div>
+          {leg.fare &&
+            leg.fare.isUnknown &&
+            config.showTicketInformation && (
+              <div className="disclaimer-container unknown-fare-disclaimer__leg">
+                <div className="description-container">
+                  <span className="accent">
+                    {`${intl.formatMessage({ id: 'pay-attention' })} `}
+                  </span>
+                  {intl.formatMessage({ id: 'separate-ticket-required' })}
+                </div>
+                <div className="ticket-info">
+                  <div className="accent">{leg.fare.routeName}</div>
+                  {leg.fare.agency && (
+                    <React.Fragment>
+                      <div>{leg.fare.agency.name}</div>
+                      {leg.fare.agency.fareUrl && (
+                        <ExternalLink
+                          className="agency-link"
+                          href={leg.fare.agency.fareUrl}
+                        >
+                          {intl.formatMessage({ id: 'extra-info' })}
+                        </ExternalLink>
+                      )}
+                    </React.Fragment>
+                  )}
+                </div>
+              </div>
+            )}
         </div>
       </div>
     );
@@ -292,7 +323,9 @@ TransitLeg.contextTypes = {
       delayThreshold: PropTypes.number,
       showZoneLimits: PropTypes.bool,
     }).isRequired,
+    showTicketInformation: PropTypes.bool,
   }).isRequired,
+  intl: intlShape.isRequired,
 };
 
 export default TransitLeg;

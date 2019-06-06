@@ -27,9 +27,9 @@ const onlyUpdateCoordChanges = onlyUpdateForKeys([
   'children',
 ]);
 
-const placeMarkerModules = {
-  PlaceMarker: () =>
-    importLazy(import(/* webpackChunkName: "map" */ './PlaceMarker')),
+const locationMarkerModules = {
+  LocationMarker: () =>
+    importLazy(import(/* webpackChunkName: "map" */ './LocationMarker')),
 };
 
 const jsonModules = {
@@ -94,8 +94,9 @@ class MapWithTrackingStateHandler extends React.Component {
     }
 
     const json = await Promise.all(
-      layers.map(async ({ url, name, metadata }) => ({
+      layers.map(async ({ url, name, isOffByDefault, metadata }) => ({
         url,
+        isOffByDefault,
         data: await getGeoJsonData(url, name, metadata),
       })),
     );
@@ -103,8 +104,8 @@ class MapWithTrackingStateHandler extends React.Component {
       return;
     }
     const { geoJson } = this.state;
-    json.forEach(({ url, data }) => {
-      geoJson[url] = data;
+    json.forEach(({ url, data, isOffByDefault }) => {
+      geoJson[url] = { ...data, isOffByDefault };
     });
     this.setState(geoJson);
   }
@@ -221,8 +222,10 @@ class MapWithTrackingStateHandler extends React.Component {
 
     if (origin && origin.ready === true && origin.gps !== true) {
       leafletObjs.push(
-        <LazilyLoad modules={placeMarkerModules} key="from">
-          {({ PlaceMarker }) => <PlaceMarker position={this.props.origin} />}
+        <LazilyLoad modules={locationMarkerModules} key="from">
+          {({ LocationMarker }) => (
+            <LocationMarker position={origin} type="from" />
+          )}
         </LazilyLoad>,
       );
     }
@@ -230,7 +233,12 @@ class MapWithTrackingStateHandler extends React.Component {
     if (geoJson) {
       const { bounds } = this.state;
       Object.keys(geoJson)
-        .filter(key => mapLayers.geoJson[key] !== false)
+        .filter(
+          key =>
+            mapLayers.geoJson[key] !== false &&
+            (mapLayers.geoJson[key] === true ||
+              geoJson[key].isOffByDefault !== true),
+        )
         .forEach(key => {
           leafletObjs.push(
             <LazilyLoad modules={jsonModules} key={key}>
@@ -249,7 +257,7 @@ class MapWithTrackingStateHandler extends React.Component {
         zoom={this.state.initialZoom}
         mapTracking={this.state.mapTracking}
         className="flex-grow"
-        origin={this.props.origin}
+        origin={origin}
         leafletEvents={{
           onDragstart: this.disableMapTracking,
           onDragend: this.updateCurrentBounds,
@@ -263,7 +271,7 @@ class MapWithTrackingStateHandler extends React.Component {
         {children}
         <div className="map-with-tracking-buttons">
           {renderCustomButtons && renderCustomButtons()}
-          {this.props.position.hasLocation && (
+          {position.hasLocation && (
             <ToggleMapTracking
               key="toggleMapTracking"
               handleClick={
