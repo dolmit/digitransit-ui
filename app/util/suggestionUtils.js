@@ -154,8 +154,9 @@ export function getAddressLabel(suggestion) {
             new RegExp(`${escapeRegExp(suggestion.name)}(,)?( )?`),
             '',
         );
-        if (suggestion.region) label += ", " + suggestion.region;
+        label = label.replace(/,\s?Estonia$/, "");
     }
+    if (suggestion.region) label += ", " + suggestion.region;
     return label.replace(/,\s*$/, "");
 }
 
