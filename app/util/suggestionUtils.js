@@ -142,7 +142,7 @@ export function getLabel(properties) {
 }
 
 export function extractStopFromName(suggestion) {
-    return suggestion.replace(/ [\d-]+$/, "")
+    return suggestion.name.replace(/ [\d-]+$/, "")
 }
 
 export function getAddressLabel(suggestion) {
