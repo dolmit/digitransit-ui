@@ -98,13 +98,10 @@ export const getNameLabel = memoize(
                     ];
             case 'stop':
                 return plain
-                    ? [suggestion.name || suggestion.label, getLocality(suggestion)]
+                    ? [extractStopFromName(suggestion) || suggestion.label, getLocality(suggestion)]
                     : [
-                        suggestion.name,
+                        extractStopFromName(suggestion),
                         <span key={suggestion.id}>
-                {getStopCode(suggestion) && (
-                    <StopCode code={getStopCode(suggestion)}/>
-                )}
                             {getAddressLabel(suggestion)}
               </span>,
                     ];
@@ -144,6 +141,10 @@ export function getLabel(properties) {
     }
 }
 
+export function extractStopFromName(suggestion) {
+    return suggestion.replace(/ [\d-]+$/, "")
+}
+
 export function getAddressLabel(suggestion) {
     let label = "";
     if (suggestion.locality && suggestion.neighbourhood) {
@@ -156,7 +157,7 @@ export function getAddressLabel(suggestion) {
         );
     }
     if (suggestion.region) label += ", " + suggestion.region;
-    return label.replace(/,\s*$/, "");
+    return label.replace(/,\s*$/, "").replace(/^, /, "");
 }
 
 export function suggestionToLocation(item) {
