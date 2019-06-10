@@ -150,6 +150,8 @@ export function getAddressLabel(suggestion) {
     if (suggestion.locality && suggestion.neighbourhood) {
         label += suggestion.neighbourhood + ", ";
         label += suggestion.locality;
+    } else if (suggestion.locality) {
+        label += suggestion.locality;
     } else {
         label = suggestion.label.replace(
             new RegExp(`${escapeRegExp(suggestion.name)}(,)?( Estonia)?`),
