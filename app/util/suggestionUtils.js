@@ -154,7 +154,7 @@ export function getAddressLabel(suggestion) {
         label += suggestion.locality;
     } else {
         label = suggestion.label.replace(
-            new RegExp(`${escapeRegExp(suggestion.name)}(,)?( Estonia)?`),
+            new RegExp(`(, Estonia)?`),
             '',
         );
     }
