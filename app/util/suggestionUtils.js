@@ -153,10 +153,7 @@ export function getAddressLabel(suggestion) {
     } else if (suggestion.locality) {
         label += suggestion.locality;
     } else {
-        label = suggestion.label.replace(
-            new RegExp(`(, Estonia)?`),
-            '',
-        );
+        label = suggestion.label.replace(/, Estonia/, "").replace(/ [\d-]+$/, "");
     }
     if (suggestion.region) label += ", " + suggestion.region;
     return label.replace(/,\s*$/, "").replace(/^, /, "");
