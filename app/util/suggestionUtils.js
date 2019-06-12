@@ -107,7 +107,7 @@ export const getNameLabel = memoize(
                     ];
             case 'station':
             default:
-                return [suggestion.name || suggestion.label, getLocality(suggestion)];
+                return [suggestion.name , getAddressLabel(suggestion)];
         }
     },
     (item, plain) => {
