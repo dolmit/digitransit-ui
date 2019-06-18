@@ -303,7 +303,7 @@ export default {
         primary: '#006EB5',
     },
 
-    sprites: 'svg-sprite.default.svg',
+    sprites: 'assets/svg-sprite.default.svg',
 
     disruption: {
         showInfoButton: true,
