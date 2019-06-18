@@ -15,7 +15,6 @@ ENV \
   API_URL='' \
   MAP_URL='http://localhost:8090' \
   OTP_URL='http://localhost:8080/otp/routers/estonia/' \
-  ALERTS_URL='' \
   VEHICLE_URL='' \
   GEOCODING_BASE_URL='http://localhost:4000/v1' \
   APP_PATH='' \

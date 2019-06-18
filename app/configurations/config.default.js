@@ -1,3 +1,6 @@
+/* eslint-disable prefer-template */
+import safeJsonParse from '../util/safeJsonParser';
+
 const CONFIG = process.env.CONFIG || 'default';
 const API_URL = process.env.API_URL || 'https://dev-api.digitransit.fi';
 const GEOCODING_BASE_URL = `${API_URL}/geocoding/v1`;
@@ -9,6 +12,9 @@ const PORT = process.env.PORT || 8080;
 const APP_DESCRIPTION = 'Digitransit journey planning UI';
 const OTP_TIMEOUT = process.env.OTP_TIMEOUT || 10000; // 10k is the current server default
 const YEAR = 1900 + new Date().getYear();
+const realtime = require('./realtimeUtils').default;
+
+const REALTIME_PATCH = safeJsonParse(process.env.REALTIME_PATCH) || {};
 
 export default {
   SENTRY_DSN,
@@ -26,7 +32,6 @@ export default {
     },
     STOP_MAP: `${MAP_URL}/map/v1/finland-stop-map/`,
     CITYBIKE_MAP: `${MAP_URL}/map/v1/hsl-citybike-map/`,
-    ALERTS: process.env.ALERTS_URL || `${API_URL}/realtime/service-alerts/v1`,
     FONT:
       'https://fonts.googleapis.com/css?family=Lato:300,400,900%7CPT+Sans+Narrow:400,700',
     PELIAS: `${process.env.GEOCODING_BASE_URL || GEOCODING_BASE_URL}/search`,
@@ -57,16 +62,8 @@ export default {
   searchParams: {},
   feedIds: [],
 
-  realTime: {
-    /* sources per feed Id */
-    HSL: {
-      mqtt: 'wss://mqtt.hsl.fi',
-      routeSelector: function selectRoute(routePageProps) {
-        const route = routePageProps.route.gtfsId.split(':');
-        return route[1];
-      },
-    },
-  },
+  realTime: realtime,
+  realTimePatch: REALTIME_PATCH,
 
   // Google Tag Manager id
   GTMid: 'GTM-PZV2S2V',
@@ -254,20 +251,14 @@ export default {
   cityBike: {
     // Config for map features. NOTE: availability for routing is controlled by
     // transportModes.citybike.availableForSelection
-    showCityBikes: true,
     showStationId: true,
-
-    useUrl: {
-      fi: 'https://www.hsl.fi/kaupunkipyorat',
-      sv: 'https://www.hsl.fi/sv/stadscyklar',
-      en: 'https://www.hsl.fi/en/citybikes',
-    },
-
     cityBikeMinZoom: 14,
     cityBikeSmallIconZoom: 14,
     // When should bikeshare availability be rendered in orange rather than green
     fewAvailableCount: 3,
+    networks: {},
   },
+
   // Lowest level for stops and terminals are rendered
   stopsMinZoom: 13,
   // Highest level when stops and terminals are still rendered as small markers
@@ -288,7 +279,7 @@ export default {
     primary: '#00AFFF',
   },
 
-  sprites: 'svg-sprite.default.svg',
+  sprites: 'assets/svg-sprite.default.svg',
 
   disruption: {
     showInfoButton: true,
@@ -322,6 +313,27 @@ export default {
 
   // Ticket information feature toggle
   showTicketInformation: false,
+  ticketInformation: {
+    // This is the name of the primary agency operating in the area.
+    // It is used when a ticket price cannot be shown to the user, indicating
+    // that the primary agency is not responsible for ticketing.
+    /*
+    primaryAgencyName: ...,
+    */
+    // UTM parameters (per agency) that should be appended to the agency's
+    // fareUrl when the fareUrl link is shown in the UI.
+    /*
+    trackingParameters: {
+      "agencyGtfsId": {
+        utm_campaign: ...,
+        utm_content: ...,
+        utm_medium: ...,
+        utm_source: ...,
+      }
+    },
+    */
+  },
+
   useTicketIcons: false,
   showRouteInformation: false,
 
@@ -374,7 +386,7 @@ export default {
     },
 
     citybike: {
-      availableForSelection: false, // TODO: Turn off in autumn
+      availableForSelection: true, // TODO: Turn off in autumn
       defaultValue: false, // always false
     },
   },

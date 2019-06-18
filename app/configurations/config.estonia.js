@@ -653,6 +653,12 @@ export default {
         featureMapping: {
             ticketSales: {},
         },
+        tooltip: {
+            en: 'New! You can now get zones on the map from the settings.',
+            et: 'Uus! Nüüd saad kaarditsoone valida seadetest.',
+            fi: 'Uutta! Saat nyt vyöhykkeet kartalle asetuksista.',
+            ru: 'New! You can now get zones on the map from the settings.',
+        },
     },
 
     routeTimetables: {},
