@@ -5,6 +5,8 @@
 
 /* Operator palette */
 $estonian-blue: #006EB5;
+$estonian-rail: #ff711d;
+$estonian-trolley : #8c4799;
 $hsl-blue: #007ac9;
 $hsl-dark-blue: #0062a1;
 $hsl-pink: #f092cd;
@@ -34,8 +36,8 @@ $link-color: $primary-color;
 $airplane-color: #0046ad;
 $bus-color: $hsl-blue;
 $tram-color: $hsl-tram-green;
-$metro-color: $hsl-metro-orange;
-$rail-color: $hsl-rail-red;
+$metro-color: $estonian-trolley;
+$rail-color: $estonian-rail;
 $ferry-color: $hsl-ferry-blue;
 
 /* Fonts */

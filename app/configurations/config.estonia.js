@@ -111,7 +111,7 @@ export default {
     },
 
     defaultSettings: {
-        accessibilityOption: 0,
+        accessibilityOption: null,
         bikeSpeed: 5,
         minTransferTime: 120,
         optimize: 'QUICK',
@@ -379,17 +379,17 @@ export default {
         },
 
         airplane: {
-            availableForSelection: false,
-            defaultValue: false,
+            availableForSelection: true,
+            defaultValue: true,
         },
 
         ferry: {
-            availableForSelection: false,
-            defaultValue: false,
+            availableForSelection: true,
+            defaultValue: true,
         },
 
         citybike: {
-            availableForSelection: false, // TODO: Turn off in autumn
+            availableForSelection: true, // TODO: Turn off in autumn
             defaultValue: false, // always false
         },
     },
