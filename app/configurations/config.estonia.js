@@ -373,7 +373,7 @@ export default {
             defaultValue: true,
         },
 
-        trolley: {
+        subway: {
             availableForSelection: true,
             defaultValue: true,
         },
@@ -384,6 +384,11 @@ export default {
         },
 
         ferry: {
+            availableForSelection: true,
+            defaultValue: true,
+        },
+
+        parkAndRide: {
             availableForSelection: true,
             defaultValue: true,
         },
