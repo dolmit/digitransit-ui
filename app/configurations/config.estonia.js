@@ -344,7 +344,7 @@ export default {
         bus: 'BUS',
         tram: 'TRAM',
         rail: 'RAIL',
-        trolley: 'SUBWAY',
+        subway: 'SUBWAY',
         citybike: 'BICYCLE_RENT',
         airplane: 'AIRPLANE',
         ferry: 'FERRY',
@@ -389,7 +389,7 @@ export default {
         },
 
         citybike: {
-            availableForSelection: true, // TODO: Turn off in autumn
+            availableForSelection: false, // TODO: Turn off in autumn
             defaultValue: false, // always false
         },
     },
