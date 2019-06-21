@@ -42,7 +42,7 @@ export default {
 
     textLogo: false,
     // Navbar logo
-    logo: 'estonia/logo_1_valge.png',
+    logo: 'estonia/p_1.png',
 
     contactName: {
         sv: 'Digitransit',
@@ -384,11 +384,6 @@ export default {
         },
 
         ferry: {
-            availableForSelection: true,
-            defaultValue: true,
-        },
-
-        parkAndRide: {
             availableForSelection: true,
             defaultValue: true,
         },
