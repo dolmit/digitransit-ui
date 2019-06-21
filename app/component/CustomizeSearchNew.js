@@ -202,22 +202,22 @@ class CustomizeSearch extends React.Component {
             defaultSettings={this.defaultSettings}
           />
         </div>
-        <div className="settings-option-container">
-          <SelectOptionContainer
-            currentSelection={currentSettings.accessibilityOption}
-            defaultValue={this.defaultSettings.accessibilityOption}
-            options={accessibilityOptions.map((o, i) => ({
-              title: accessibilityOptions[i].messageId,
-              value: accessibilityOptions[i].value,
-            }))}
-            onOptionSelected={value =>
-              replaceQueryParams(router, {
-                accessibilityOption: value,
-              })
-            }
-            title="accessibility"
-          />
-        </div>
+        {/*<div className="settings-option-container">*/}
+          {/*<SelectOptionContainer*/}
+            {/*currentSelection={currentSettings.accessibilityOption}*/}
+            {/*defaultValue={this.defaultSettings.accessibilityOption}*/}
+            {/*options={accessibilityOptions.map((o, i) => ({*/}
+              {/*title: accessibilityOptions[i].messageId,*/}
+              {/*value: accessibilityOptions[i].value,*/}
+            {/*}))}*/}
+            {/*onOptionSelected={value =>*/}
+              {/*replaceQueryParams(router, {*/}
+                {/*accessibilityOption: value,*/}
+              {/*})*/}
+            {/*}*/}
+            {/*title="accessibility"*/}
+          {/*/>*/}
+        {/*</div>*/}
         <div className="settings-option-container save-controls-container">
           <div style={{ display: 'flex' }}>
             <SaveCustomizedSettingsButton

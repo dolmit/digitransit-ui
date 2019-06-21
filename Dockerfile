@@ -1,7 +1,7 @@
 FROM node:10
 MAINTAINER Reittiopas version: 0.1
 
-EXPOSE 8080
+EXPOSE 8888
 
 ENV \
   # Where the app is built and run inside the docker fs \
@@ -11,12 +11,12 @@ ENV \
   # App specific settings to override when the image is run \
   SENTRY_DSN='' \
   SENTRY_SECRET_DSN='' \
-  PORT=8080 \
+  PORT=8888 \
   API_URL='' \
-  MAP_URL='' \
-  OTP_URL='' \
+  MAP_URL='http://localhost:8090' \
+  OTP_URL='http://localhost:8080/otp/routers/estonia/' \
   VEHICLE_URL='' \
-  GEOCODING_BASE_URL='' \
+  GEOCODING_BASE_URL='http://localhost:4000/v1' \
   APP_PATH='' \
   CONFIG='' \
   PIWIK_ADDRESS='' \
