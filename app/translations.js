@@ -386,7 +386,7 @@ const translations = {
         zone: 'Zone',
         zones: 'Fare zones',
     },
-
+  
     et: {
         'about-this-service': 'Teenusest',
         accessibility: "Juurdepääs",
@@ -1542,7 +1542,6 @@ const translations = {
         zone: 'Зона',
         zones: 'Билетные зоны',
     },
-
 };
 
 export default translations;
