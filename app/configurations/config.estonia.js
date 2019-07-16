@@ -44,7 +44,7 @@ export default {
     // Navbar logo
     logo: 'estonia/logo_1_valge.png',
 
-    favicon: 'estonia/p_1_2.png',
+    favicon: './app/configurations/images/estonia/p_1_2.png',
 
     contactName: {
         sv: 'Digitransit',
