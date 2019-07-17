@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 8080;
 const APP_DESCRIPTION = 'Digitransit journey planning UI';
 const OTP_TIMEOUT = process.env.OTP_TIMEOUT || 10000; // 10k is the current server default
 const YEAR = 1900 + new Date().getYear();
-const VEHICLES_URL = process.env.VEHICLES_URL || 'https://mqtt.dev.peatus.ee:443';
+const VEHICLES_URL = process.env.VEHICLES_URL || 'wss://mqtt.dev.peatus.ee:443';
 
 export default {
     SENTRY_DSN,
