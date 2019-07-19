@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 8080;
 const APP_DESCRIPTION = 'Digitransit journey planning UI';
 const OTP_TIMEOUT = process.env.OTP_TIMEOUT || 10000; // 10k is the current server default
 const YEAR = 1900 + new Date().getYear();
+const VEHICLES_URL = process.env.VEHICLES_URL || 'wss://mqtt.dev.peatus.ee:443';
 
 export default {
     SENTRY_DSN,
@@ -43,8 +44,8 @@ export default {
     textLogo: false,
     // Navbar logo
     logo: 'estonia/logo_1_valge.png',
-  
-    favicon: 'estonia/p_1.png',
+
+    favicon: './app/configurations/images/estonia/p_1_2.png',
 
     contactName: {
         sv: 'Digitransit',
@@ -72,7 +73,8 @@ export default {
     realTime: {
         /* sources per feed Id */
         estonia: {
-            mqtt: 'wss://uvn-233-169.ams01.zonevs.eu:4436',
+            active: true,
+            mqtt: `${VEHICLES_URL}`,
             agency: 'Tallinna TA',
             routeSelector: function selectRoute(routePageProps) {
                 const route = routePageProps.route.gtfsId.split(':');
