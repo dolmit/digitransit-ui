@@ -53,6 +53,21 @@ export function extractStopFromName(suggestion) {
   return suggestion.name.replace(/ [\d-]+$/, '');
 }
 
+export function getAddressLabel(suggestion) {
+  let label = '';
+  if (suggestion) {
+    label = [
+      suggestion.name.replace(/ [\d-]+$/, ''),
+      suggestion.neighbourhood,
+      suggestion.locality,
+      suggestion.region,
+    ]
+      .filter(x => !!x)
+      .join(',');
+  }
+  return label.replace(/,\s*$/, '').replace(/^, /, '');
+}
+
 export const getNameLabel = memoize(
   (suggestion, plain = false) => {
     switch (suggestion.layer) {
@@ -143,21 +158,6 @@ export function getLabel(properties) {
   }
 }
 
-export function getAddressLabel(suggestion) {
-  let label = '';
-  if (suggestion) {
-    label = [
-      suggestion.name.replace(/ [\d-]+$/, ''),
-      suggestion.neighbourhood,
-      suggestion.locality,
-      suggestion.region,
-    ]
-      .filter(x => !!x)
-      .join(',');
-  }
-  return label.replace(/,\s*$/, '').replace(/^, /, '');
-}
-
 export function suggestionToLocation(item) {
   const name = getLabel(item.properties);
 
@@ -193,6 +193,7 @@ export function getIcon(layer) {
     ['locality', 'icon-icon_city'],
     ['station', 'icon-icon_station'],
     ['localadmin', 'icon-icon_city'],
+    ['venue', 'icon-icon_city'],
     ['neighbourhood', 'icon-icon_city'],
     ['route-BUS', 'icon-icon_bus-withoutBox'],
     ['route-TRAM', 'icon-icon_tram-withoutBox'],
