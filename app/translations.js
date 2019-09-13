@@ -240,7 +240,6 @@ const translations = {
     'place-route-or-keyword': 'Destination, route or stop',
     'platform-num': 'Platform {platformCode}',
     'platform-short': 'Plat. {platformCode}',
-
     'prefer-walking': 'Prefer walking',
     preferred: 'Prefer routes',
     previous: 'Previous',
@@ -1403,7 +1402,6 @@ const translations = {
     'place-route-or-keyword': 'Пункт назначения, маршрут или остановка',
     'platform-num': 'Платформа{platformCode}',
     'platform-short': 'Платф. {platformCode}',
-
     'prefer-walking': 'Предпочесть прогулку',
     preferred: 'Предпочесть маршруты',
     previous: 'Предыдущий',
