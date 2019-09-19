@@ -57,7 +57,7 @@ export function getAddressLabel(suggestion) {
   let label = '';
   if (suggestion) {
     label = [
-      suggestion.name.replace(/ [\d-]+$/, ''),
+      suggestion.name === suggestion.street ? null : suggestion.name,
       suggestion.neighbourhood,
       suggestion.locality,
       suggestion.region,

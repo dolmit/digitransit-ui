@@ -1,11 +1,9 @@
 const CONFIG = 'estonia';
 const API_URL = process.env.API_URL || 'https://dev-api.digitransit.fi';
-const GEOCODING_BASE_URL =
-  process.env.GEOCODING_BASE_URL || `${API_URL}/geocoding/v1`;
-const MAP_URL =
-  process.env.MAP_URL || 'https://digitransit-dev-cdn-origin.azureedge.net';
+const GEOCODING_BASE_URL = process.env.GEOCODING_BASE_URL || `${API_URL}/geocoding/v1`;
+const MAP_URL = process.env.MAP_URL || 'https://digitransit-dev-cdn-origin.azureedge.net';
 const APP_PATH = process.env.APP_CONTEXT || '';
-const { SENTRY_DSN } = process.env;
+const {SENTRY_DSN} = process.env;
 const PORT = process.env.PORT || 8080;
 const APP_DESCRIPTION = 'Digitransit journey planning UI';
 const OTP_TIMEOUT = process.env.OTP_TIMEOUT || 10000; // 10k is the current server default
@@ -30,7 +28,8 @@ export default {
     CITYBIKE_MAP: `${MAP_URL}/map/v1/hsl-citybike-map/`,
     PARK_AND_RIDE_MAP: `${MAP_URL}/map/v1/estonia-parkandride-bikestop-map/`,
     ALERTS: process.env.ALERTS_URL || `${API_URL}/realtime/service-alerts/v1`,
-    FONT: 'https://cloud.typography.com/6364294/7572592/css/fonts.css',
+    FONT:
+      'https://fonts.googleapis.com/css?family=Lato:300,400,900%7CPT+Sans+Narrow:400,700',
     PELIAS: `${process.env.GEOCODING_BASE_URL || GEOCODING_BASE_URL}/search`,
     PELIAS_REVERSE_GEOCODER: `${process.env.GEOCODING_BASE_URL ||
       GEOCODING_BASE_URL}/reverse`,
