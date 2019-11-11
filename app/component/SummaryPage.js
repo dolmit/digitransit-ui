@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import Relay from 'react-relay/classic';
+import cookie from 'react-cookie';
 import moment from 'moment';
 import findIndex from 'lodash/findIndex';
 import get from 'lodash/get';
@@ -33,6 +34,8 @@ import ComponentUsageExample from './ComponentUsageExample';
 import exampleData from './data/SummaryPage.ExampleData';
 import { isBrowser } from '../util/browser';
 import { itineraryHasCancelation } from '../util/alertUtils';
+import triggerMessage from '../util/messageUtils';
+import MessageStore from '../store/MessageStore';
 
 export const ITINERARYFILTERING_DEFAULT = 1.5;
 
@@ -88,6 +91,7 @@ class SummaryPage extends React.Component {
     config: PropTypes.object,
     executeAction: PropTypes.func.isRequired,
     headers: PropTypes.object.isRequired,
+    getStore: PropTypes.func,
   };
 
   static propTypes = {
@@ -182,6 +186,19 @@ class SummaryPage extends React.Component {
     } = this.context;
     const itineraries = (plan && plan.itineraries) || [];
     const activeIndex = getActiveIndex(location, itineraries);
+    triggerMessage(
+      from.lat,
+      from.lon,
+      this.context,
+      this.context.getStore(MessageStore).getMessages(),
+    );
+
+    triggerMessage(
+      to.lat,
+      to.lon,
+      this.context,
+      this.context.getStore(MessageStore).getMessages(),
+    );
 
     const leafletObjs = sortBy(
       itineraries.map((itinerary, i) => (
@@ -299,7 +316,9 @@ class SummaryPage extends React.Component {
       latestArrivalTime = Math.max(...itineraries.map(i => i.endTime));
     }
 
+    // added itineraryFutureDays parameter (DT-3175)
     const serviceTimeRange = validateServiceTimeRange(
+      get(this.context, 'config.itineraryFutureDays'),
       this.props.serviceTimeRange,
     );
     if (this.props.breakpoint === 'large') {
@@ -467,7 +486,8 @@ const containerComponent = Relay.createContainer(SummaryPageWithBreakpoint, {
           preferred: $preferred,
           unpreferred: $unpreferred,
           allowedBikeRentalNetworks: $allowedBikeRentalNetworks,
-          ),
+          locale: $locale,
+        ),
         {
           ${SummaryPlanContainer.getFragment('plan')}
           ${ItineraryTab.getFragment('searchTime')}
@@ -524,6 +544,7 @@ const containerComponent = Relay.createContainer(SummaryPageWithBreakpoint, {
       walkSpeed: null,
       wheelchair: null,
       allowedBikeRentalNetworks: null,
+      locale: cookie.load('lang') || 'fi',
     },
     ...defaultRoutingSettings,
   },

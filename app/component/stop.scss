@@ -174,12 +174,39 @@
       stroke: $black;
       fill: $black;
     }
+    .no-alerts span {
+      color: $black;
+    }
+    .no-alerts.icon {
+      fill: $black;
+    }
+    .active-disruption-alert.icon {
+      fill: $black;
+    }
+    .active-service-alert.icon {
+      stroke: $black;
+      fill: $black;
+    }
   }
 
   &.alert-active {
     .icon {
       fill: $cancelation-red;
     }
+  }
+
+  .no-alerts span {
+    color: rgb(183, 183, 183);
+  }
+  .no-alerts.icon {
+    fill: rgb(183, 183, 183);
+  }
+  .active-disruption-alert.icon {
+    fill: $cancelation-red
+  }
+  .active-service-alert.icon {
+    stroke: $primary-color;
+    fill: $primary-color;
   }
 
   @media print {
@@ -294,6 +321,31 @@
   .external-link-icon {
     color: $gray-blue;
   }
+}
+.external-stop-link {
+  float:right;
+
+  a {
+    color: $link-color !important;
+    text-decoration: none;
+    @include font-medium;
+  }
+
+  .external-link-icon-outer {
+    color: white;
+  }
+
+  .external-link-icon {
+    color: $primary-color;
+  }
+}
+
+.external-stop-link-font {
+  display: inline-block;
+  vertical-align: text-top;
+  color: blue;
+  font-size: $font-size-xxsmall;
+  text-decoration: none;
 }
 
 hr.action-bar {

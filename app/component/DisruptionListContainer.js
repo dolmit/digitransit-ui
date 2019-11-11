@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import Relay from 'react-relay/classic';
-
 import AlertList from './AlertList';
 import Icon from './Icon';
 import { AlertSeverityLevelType } from '../constants';
@@ -14,6 +13,7 @@ import {
   getServiceAlertHeader,
   getServiceAlertUrl,
   isAlertValid,
+  createUniqueAlertList,
 } from '../util/alertUtils';
 import { isKeyboardSelectionEvent } from '../util/browser';
 import withBreakpoint from '../util/withBreakpoint';
@@ -47,22 +47,29 @@ function DisruptionListContainer({ breakpoint, currentTime, root }, { intl }) {
     );
   }
 
-  let disruptionCount = 0;
-  let infoCount = 0;
-
   const routeAlerts = [];
   const stopAlerts = [];
+  const mappedRouteDisruptions = [];
+  const mappedRouteServiceAlerts = [];
+
+  const mappedStopDisruptions = [];
+  const mappedStopServiceAlerts = [];
 
   root.alerts.forEach(alert => {
     const mappedAlert = mapAlert(alert, intl.locale);
     if (!isAlertValid(mappedAlert, currentTime)) {
       return;
     }
-
-    if (isDisruption(mappedAlert)) {
-      disruptionCount += 1;
-    } else {
-      infoCount += 1;
+    if (!isDisruption(mappedAlert)) {
+      if (alert.route) {
+        mappedRouteServiceAlerts.push(mappedAlert);
+      } else if (alert.stop) {
+        mappedStopServiceAlerts.push(mappedAlert);
+      }
+    } else if (alert.route) {
+      mappedRouteDisruptions.push(mappedAlert);
+    } else if (alert.stop) {
+      mappedStopDisruptions.push(mappedAlert);
     }
 
     if (alert.route) {
@@ -72,7 +79,19 @@ function DisruptionListContainer({ breakpoint, currentTime, root }, { intl }) {
     }
   });
 
+  const disruptionCount =
+    createUniqueAlertList(mappedRouteDisruptions, false, currentTime, true)
+      .length +
+    createUniqueAlertList(mappedStopDisruptions, false, currentTime, true)
+      .length;
+  const infoCount =
+    createUniqueAlertList(mappedRouteServiceAlerts, false, currentTime, true)
+      .length +
+    createUniqueAlertList(mappedStopServiceAlerts, false, currentTime, true)
+      .length;
+
   const [showDisruptions, setShowDisruptions] = useState(disruptionCount > 0);
+
   const routeAlertsToShow = routeAlerts.filter(
     showDisruptions ? isDisruption : isInfo,
   );
@@ -145,7 +164,11 @@ function DisruptionListContainer({ breakpoint, currentTime, root }, { intl }) {
             <div>
               <FormattedMessage id="routes" tagName="h2" />
             </div>
-            <AlertList disableScrolling serviceAlerts={routeAlertsToShow} />
+            <AlertList
+              disableScrolling
+              showRouteNameLink
+              serviceAlerts={routeAlertsToShow}
+            />
           </React.Fragment>
         )}
         {stopAlertsToShow.length > 0 && (
@@ -153,7 +176,11 @@ function DisruptionListContainer({ breakpoint, currentTime, root }, { intl }) {
             <div>
               <FormattedMessage id="stops" tagName="h2" />
             </div>
-            <AlertList disableScrolling serviceAlerts={stopAlertsToShow} />
+            <AlertList
+              disableScrolling
+              showRouteNameLink
+              serviceAlerts={stopAlertsToShow}
+            />
           </React.Fragment>
         )}
       </div>
@@ -198,10 +225,12 @@ const containerComponent = Relay.createContainer(
             color
             mode
             shortName
+            gtfsId
           }
           stop {
             code
             vehicleMode
+            gtfsId
           }
         }
       }

@@ -6,6 +6,28 @@ class RealTimeInformationStore extends Store {
   constructor(dispatcher) {
     super(dispatcher);
     this.vehicles = {};
+    this.allowUpdates = true;
+  }
+
+  checkEmit() {
+    if (this.pendingEmit) {
+      this.pendingEmit = false;
+      this.emitChange();
+    }
+  }
+
+  conditionalEmit() {
+    if (this.allowUpdates) {
+      setTimeout(() => {
+        this.allowUpdates = true;
+        this.checkEmit();
+      }, 1000);
+      this.allowUpdates = false;
+      this.pendingEmit = false;
+      this.emitChange();
+    } else {
+      this.pendingEmit = true;
+    }
   }
 
   storeClient(data) {
@@ -26,14 +48,16 @@ class RealTimeInformationStore extends Store {
   }
 
   handleMessage(message) {
-    if (Array.isArray(message)) {
-      message.forEach(msg => {
-        this.vehicles[msg.id] = msg;
-      });
-    } else {
-      this.vehicles[message.id] = message;
+    if (message) {
+      if (Array.isArray(message)) {
+        message.forEach(msg => {
+          this.vehicles[msg.id] = msg;
+        });
+      } else {
+        this.vehicles[message.id] = message;
+      }
+      this.conditionalEmit();
     }
-    this.emitChange();
   }
 
   setTopics(topics) {

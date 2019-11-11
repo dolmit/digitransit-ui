@@ -6,6 +6,7 @@ const APP_TITLE = 'Nyssen reittiopas';
 const APP_DESCRIPTION = 'Nyssen reittiopas';
 
 const walttiConfig = require('./waltti').default;
+const tampereTimetables = require('./timetableConfigUtils').default.tampere;
 
 const minLat = 61.16;
 const maxLat = 62.31;
@@ -45,20 +46,23 @@ export default configMerger(walttiConfig, {
           sv: 'Zoner',
           en: 'Zones',
         },
-        url: '/assets/geojson/tre_zone_lines_20190603.geojson',
+        url: '/assets/geojson/tre_zone_lines_20191028.geojson',
         isOffByDefault: true,
       },
     ],
     zones: {
-      url: '/assets/geojson/tre_zone_areas_20190603.geojson',
+      url: '/assets/geojson/tre_zone_areas_20191028.geojson',
     },
   },
 
   mapLayers: {
     tooltip: {
-      fi: 'Uutta! Saat nyt vyöhykkeet kartalle asetuksista.',
-      en: 'New! You can now get zones on the map from the settings.',
-      sv: 'Ny! Från inställningar, kan du hämta zoner på kartan.',
+      fi:
+        'Uutta! Saat nyt vyöhykkeet ja lähellä olevat bussit kartalle asetuksista.',
+      en:
+        'New! You can now get zones and nearby busses on the map from the settings.',
+      sv:
+        'Nytt! I inställningarna kan du nu välja att se zoner och närliggande bussar på kartan.',
     },
   },
 
@@ -69,6 +73,7 @@ export default configMerger(walttiConfig, {
   stopCard: {
     header: {
       showZone: true,
+      virtualMonitorBaseUrl: 'https://tremonitori.digitransit.fi/stop/tampere:',
     },
   },
 
@@ -216,4 +221,12 @@ export default configMerger(walttiConfig, {
       },
     ],
   },
+  showAllBusses: true,
+  showVehiclesOnStopPage: true,
+  timetables: {
+    tampere: tampereTimetables,
+  },
+
+  // Number of days to include to the service time range from the future (DT-3175)
+  itineraryFutureDays: 60,
 });

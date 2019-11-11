@@ -23,6 +23,7 @@ import {
   getServiceAlertsForRoute,
   getServiceAlertsForRouteStops,
   isAlertActive,
+  getActiveAlertSeverityLevel,
 } from '../util/alertUtils';
 import { PREFIX_ROUTES } from '../util/path';
 import withBreakpoint from '../util/withBreakpoint';
@@ -132,12 +133,14 @@ class RoutePage extends React.Component {
         executeAction(changeRealTimeClientTopics, {
           ...source,
           agency,
-          options: {
-            route: id,
-            mode: route.mode.toLowerCase(),
-            gtfsId: routeParts[1],
-            headsign: pattern.headsign,
-          },
+          options: [
+            {
+              route: id,
+              mode: route.mode.toLowerCase(),
+              gtfsId: routeParts[1],
+              headsign: pattern.headsign,
+            },
+          ],
           oldTopics: topics,
           client,
         });
@@ -183,6 +186,14 @@ class RoutePage extends React.Component {
       ],
       currentTime,
     );
+    const hasActiveServiceAlerts = getActiveAlertSeverityLevel(
+      getServiceAlertsForRoute(route, patternId),
+      currentTime,
+    );
+
+    const disruptionClassName =
+      (hasActiveAlert && 'active-disruption-alert') ||
+      (hasActiveServiceAlerts && 'active-service-alert');
 
     return (
       <div>
@@ -242,8 +253,13 @@ class RoutePage extends React.Component {
                 this.changeTab(Tab.Disruptions);
               }}
             >
-              <div>
+              <div
+                className={`tab-route-disruption ${disruptionClassName ||
+                  `no-alerts`}`}
+              >
                 <Icon
+                  className={`route-page-tab_icon ${disruptionClassName ||
+                    `no-alerts`}`}
                   img={hasActiveAlert ? 'icon-icon_caution' : 'icon-icon_info'}
                 />
                 <FormattedMessage
@@ -263,7 +279,6 @@ class RoutePage extends React.Component {
               route={route}
               onSelectChange={this.onPatternChange}
               gtfsId={route.gtfsId}
-              activeTab={activeTab}
               className={cx({ 'bp-large': breakpoint === 'large' })}
             />
           )}

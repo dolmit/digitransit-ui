@@ -14,6 +14,11 @@ import {
 } from '../util/alertUtils';
 import { isBrowser } from '../util/browser';
 import { PREFIX_ROUTES } from '../util/path';
+import {
+  stopRealTimeClient,
+  startRealTimeClient,
+  changeRealTimeClientTopics,
+} from '../action/realTimeClientAction';
 
 const asDepartures = stoptimes =>
   !stoptimes
@@ -69,10 +74,103 @@ class DepartureListContainer extends Component {
     className: PropTypes.string,
     isTerminal: PropTypes.bool,
     showPlatformCodes: PropTypes.bool,
+    isStopPage: PropTypes.bool,
   };
 
   static defaultProps = {
     showPlatformCodes: false,
+  };
+
+  constructor(props) {
+    super(props);
+    this.startClient = this.startClient.bind(this);
+    this.updateClient = this.updateClient.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.context.config.showVehiclesOnStopPage && this.props.isStopPage) {
+      const departures = asDepartures(this.props.stoptimes)
+        .filter(departure => !(this.props.isTerminal && departure.isArrival))
+        .filter(departure => this.props.currentTime < departure.stoptime);
+      this.startClient(departures);
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.context.config.showVehiclesOnStopPage && this.props.isStopPage) {
+      const departures = asDepartures(this.props.stoptimes)
+        .filter(departure => !(this.props.isTerminal && departure.isArrival))
+        .filter(departure => this.props.currentTime < departure.stoptime)
+        .filter(departure => departure.realtime);
+
+      this.updateClient(departures);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.context.config.showVehiclesOnStopPage && this.props.isStopPage) {
+      const { client } = this.context.getStore('RealTimeInformationStore');
+      if (client) {
+        this.context.executeAction(stopRealTimeClient, client);
+      }
+    }
+  }
+
+  configClient = departures => {
+    const trips = departures
+      .filter(departure => departure.realtime)
+      .filter(
+        departure =>
+          departure.pattern.stops
+            .map(stop => stop.code)
+            .indexOf(departure.stop.code) >= 0,
+      )
+      .map(departure => ({
+        tripId: departure.trip.gtfsId.split(':')[1],
+      }));
+
+    const { config } = this.context;
+    const { realTime } = config;
+    let agency;
+
+    /* handle multiple feedid case */
+    config.feedIds.forEach(ag => {
+      if (!agency && realTime[ag]) {
+        agency = ag;
+      }
+    });
+    const source = agency && realTime[agency];
+    if (source && source.active) {
+      return {
+        ...source,
+        agency,
+        options: trips,
+      };
+    }
+    return null;
+  };
+
+  startClient = departures => {
+    const clientConfig = this.configClient(departures);
+    if (clientConfig) {
+      this.context.executeAction(startRealTimeClient, clientConfig);
+    }
+  };
+
+  updateClient = departures => {
+    const { client, topics } = this.context.getStore(
+      'RealTimeInformationStore',
+    );
+    if (client) {
+      const clientConfig = this.configClient(departures);
+      if (clientConfig) {
+        this.context.executeAction(changeRealTimeClientTopics, {
+          ...clientConfig,
+          client,
+          oldTopics: topics,
+        });
+      }
+    }
   };
 
   onScroll = () => {
@@ -171,6 +269,12 @@ class DepartureListContainer extends Component {
   }
 }
 
+DepartureListContainer.contextTypes = {
+  executeAction: PropTypes.func.isRequired,
+  getStore: PropTypes.func.isRequired,
+  config: PropTypes.object.isRequired,
+};
+
 const containerComponent = Relay.createContainer(DepartureListContainer, {
   fragments: {
     stoptimes: () => Relay.QL`
@@ -191,6 +295,7 @@ const containerComponent = Relay.createContainer(DepartureListContainer, {
           }
           trip {
             gtfsId
+            directionId
             tripHeadsign
             stops {
               id
@@ -208,6 +313,10 @@ const containerComponent = Relay.createContainer(DepartureListContainer, {
                 ${RouteAlertsQuery}
               }
               code
+              stops {
+                gtfsId
+                code
+              }
             }
           }
         }

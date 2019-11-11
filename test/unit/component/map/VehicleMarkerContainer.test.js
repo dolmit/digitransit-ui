@@ -186,21 +186,57 @@ describe('<VehicleMarkerContainer />', () => {
       );
       expect(shouldShow).to.equal(true);
     });
+
+    it('should return true when direction, tripStartTime, pattern and headsign are undefined in arguments', () => {
+      const message = {
+        lat: 61.50639,
+        long: 23.77416,
+        route: 'tampere:2',
+        direction: 0,
+        tripStartTime: '1514',
+        headsign: 'Pyynikintori',
+      };
+
+      const shouldShow = shouldShowVehicle(
+        message,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+      );
+      expect(shouldShow).to.equal(true);
+    });
   });
 
   describe('getVehicleIcon', () => {
     it('should use an appropriate icon for the given mode', () => {
-      const icon = getVehicleIcon('subway', 180);
+      const icon = getVehicleIcon('subway', 180, '32');
       const wrapper = mountWithIntl(icon.element);
       expect(wrapper.prop('img')).to.equal('icon-icon_subway-live');
       expect(icon.className).to.contain('subway');
     });
 
     it('should use a bus icon for an unknown mode', () => {
-      const icon = getVehicleIcon('foobar', 180);
+      const icon = getVehicleIcon('foobar', 180, '32');
       const wrapper = mountWithIntl(icon.element);
       expect(wrapper.prop('img')).to.equal('icon-icon_bus-live');
       expect(icon.className).to.contain('bus');
+    });
+
+    describe('modeless icon', () => {
+      it('should use a small icon when useLargeIcon is false', () => {
+        const icon = getVehicleIcon(null, 180);
+        const wrapper = mountWithIntl(icon.element);
+        expect(wrapper.prop('img')).to.equal('icon-icon_all-vehicles-small');
+        expect(icon.className).to.contain('bus');
+      });
+
+      it('should use a large icon when useLargeIcon is true', () => {
+        const icon = getVehicleIcon(null, 180, '32', false, true);
+        const wrapper = mountWithIntl(icon.element);
+        expect(wrapper.prop('img')).to.equal('icon-icon_all-vehicles-large');
+        expect(icon.className).to.contain('bus');
+      });
     });
   });
 });

@@ -3,10 +3,12 @@ const CONFIG = 'hsl';
 const API_URL = process.env.API_URL || 'https://dev-api.digitransit.fi';
 const MAP_URL =
   process.env.MAP_URL || 'https://digitransit-dev-cdn-origin.azureedge.net';
+const STATIC_MESSAGE_URL =
+  process.env.STATIC_MESSAGE_URL || 'https://dev-yleisviesti.digitransit.fi';
 const APP_DESCRIPTION = 'Helsingin seudun liikenteen Reittiopas.';
 const YEAR = 1900 + new Date().getYear();
 
-const HSLRouteTimetable = require('./timetableConfigUtils').default.HSLRoutes;
+const HSLTimetables = require('./timetableConfigUtils').default.HSL;
 
 export default {
   CONFIG,
@@ -17,7 +19,7 @@ export default {
     PARK_AND_RIDE_MAP: `${MAP_URL}/map/v1/hsl-parkandride-map/`,
     TICKET_SALES_MAP: `${MAP_URL}/map/v1/hsl-ticket-sales-map/`,
     FONT: 'https://cloud.typography.com/6364294/7572592/css/fonts.css',
-    STOP_TIMETABLES: `${API_URL}/timetables/v1/hsl/stops/`,
+    CITYBIKE_MAP: `${MAP_URL}/map/v1/hsl-citybike-map/`,
   },
 
   contactName: {
@@ -66,6 +68,7 @@ export default {
   showDisclaimer: true,
 
   stopsMinZoom: 14,
+  mergeStopsByCode: true,
 
   colors: {
     primary: '#007ac9',
@@ -186,7 +189,6 @@ export default {
     [25.2242, 60.5016],
     [25.3661, 60.4118],
     [25.3652, 60.3756],
-    [25.5345, 60.2592],
   ],
 
   // If certain mode(s) only exist in limited number of areas, that are unwanted or unlikely places for transfers,
@@ -261,11 +263,9 @@ export default {
         [25.547057, 60.126195],
         [25.516869, 59.979617],
         [24.637799, 59.885142],
-        [24.63006, 60.074576],
       ],
     ],
   },
-
   footer: {
     content: [
       { label: `© HSL ${YEAR}` },
@@ -325,8 +325,8 @@ export default {
   redirectReittiopasParams: true,
   queryMaxAgeDays: 14, // to drop too old route request times from entry url
 
-  routeTimetables: {
-    HSL: HSLRouteTimetable,
+  timetables: {
+    HSL: HSLTimetables,
   },
 
   aboutThisService: {
@@ -395,6 +395,7 @@ export default {
     {
       id: '2',
       priority: -1,
+      shouldTrigger: true,
       content: {
         fi: [
           {
@@ -450,7 +451,7 @@ export default {
       },
     },
   ],
-  staticMessagesUrl: 'https://yleisviesti.hsldev.com/',
+  staticMessagesUrl: STATIC_MESSAGE_URL,
   geoJson: {
     layers: [
       {
@@ -501,7 +502,7 @@ export default {
   useTicketIcons: true,
 
   cityBike: {
-    showCityBikes: true,
+    showCityBikes: false,
     networks: {
       samocat: {
         icon: 'scooter',

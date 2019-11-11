@@ -52,7 +52,7 @@ export default configMerger(walttiConfig, {
       en: 'https://www.foli.fi/en/citybikes',
     },
     networks: {
-      smoove: {
+      turku: {
         icon: 'citybike',
         name: {
           fi: 'Turku',
@@ -134,6 +134,9 @@ export default configMerger(walttiConfig, {
     },
   ],
 
+  showAllBusses: true,
+  showVehiclesOnStopPage: true,
+
   aboutThisService: {
     fi: [
       {
@@ -182,7 +185,6 @@ export default configMerger(walttiConfig, {
   },
 
   staticMessages: [],
-
   geoJson: {
     layerConfigUrl: 'https://data.foli.fi/geojson/reittiopas',
   },

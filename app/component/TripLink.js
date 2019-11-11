@@ -27,7 +27,7 @@ function TripLink(props) {
       </Link>
     );
   }
-
+  // eslint-disable-next-line no-console
   console.warn('Unable to match trip', props);
   return <span className="route-now-content">{icon}</span>;
 }
@@ -37,11 +37,11 @@ TripLink.propTypes = {
   mode: PropTypes.string.isRequired,
 };
 
-export default Relay.createContainer(TripLink, {
+const containerComponent = Relay.createContainer(TripLink, {
   fragments: {
     trip: () => Relay.QL`
       fragment on QueryType {
-        trip: fuzzyTrip(route: $route, direction: $direction, time: $time, date: $date) {
+        trip: trip(id: $id) {
           gtfsId
           pattern {
             code
@@ -54,9 +54,8 @@ export default Relay.createContainer(TripLink, {
     `,
   },
   initialVariables: {
-    route: null,
-    direction: null,
-    date: null,
-    time: null,
+    id: null,
   },
 });
+
+export { containerComponent as default, TripLink as Component };

@@ -10,7 +10,7 @@ const APP_PATH = process.env.APP_CONTEXT || '';
 const { SENTRY_DSN } = process.env;
 const PORT = process.env.PORT || 8080;
 const APP_DESCRIPTION = 'Digitransit journey planning UI';
-const OTP_TIMEOUT = process.env.OTP_TIMEOUT || 10000; // 10k is the current server default
+const OTP_TIMEOUT = process.env.OTP_TIMEOUT || 12000;
 const YEAR = 1900 + new Date().getYear();
 const realtime = require('./realtimeUtils').default;
 
@@ -31,7 +31,7 @@ export default {
       sv: `${MAP_URL}/map/v1/hsl-map-sv/`,
     },
     STOP_MAP: `${MAP_URL}/map/v1/finland-stop-map/`,
-    CITYBIKE_MAP: `${MAP_URL}/map/v1/hsl-citybike-map/`,
+    CITYBIKE_MAP: `${MAP_URL}/map/v1/finland-citybike-map/`,
     FONT:
       'https://fonts.googleapis.com/css?family=Lato:300,400,900%7CPT+Sans+Narrow:400,700',
     PELIAS: `${process.env.GEOCODING_BASE_URL || GEOCODING_BASE_URL}/search`,
@@ -39,6 +39,11 @@ export default {
       GEOCODING_BASE_URL}/reverse`,
     ROUTE_TIMETABLES: {
       HSL: `${API_URL}/timetables/v1/hsl/routes/`,
+      tampere: 'http://joukkoliikenne.tampere.fi/media/aikataulut/',
+    },
+    STOP_TIMETABLES: {
+      HSL: `${API_URL}/timetables/v1/hsl/stops/`,
+      tampere: 'https://www.tampere.fi/ekstrat/ptdata/pdf/',
     },
   },
 
@@ -386,7 +391,7 @@ export default {
     },
 
     citybike: {
-      availableForSelection: true, // TODO: Turn off in autumn
+      availableForSelection: false, // TODO: Turn off in autumn
       defaultValue: false, // always false
     },
   },
@@ -657,6 +662,81 @@ export default {
 
   staticMessages: [],
 
+  staticIEMessage: [
+    {
+      id: '3',
+      priority: -1,
+      shouldTrigger: true,
+      content: {
+        fi: [
+          {
+            type: 'text',
+            content:
+              'Palvelu ei tue käyttämääsi selainta. Päivitä selainohjelmasi tai lataa uusi selain oheisista linkeistä.\n',
+          },
+          {
+            type: 'a',
+            content: 'Google Chrome',
+            href: 'https://www.google.com/chrome/',
+          },
+          {
+            type: 'a',
+            content: 'Firefox',
+            href: 'https://www.mozilla.org/fi/firefox/new/',
+          },
+          {
+            type: 'a',
+            content: 'Microsoft Edge',
+            href: 'https://www.microsoft.com/en-us/windows/microsoft-edge',
+          },
+        ],
+        en: [
+          {
+            type: 'text',
+            content:
+              'The service does not support the browser you are using. Update your browser or download a new browser using the links below.\n',
+          },
+          {
+            type: 'a',
+            content: 'Google Chrome',
+            href: 'https://www.google.com/chrome/',
+          },
+          {
+            type: 'a',
+            content: 'Firefox',
+            href: 'https://www.mozilla.org/fi/firefox/new/',
+          },
+          {
+            type: 'a',
+            content: 'Microsoft Edge',
+            href: 'https://www.microsoft.com/en-us/windows/microsoft-edge',
+          },
+        ],
+        sv: [
+          {
+            type: 'text',
+            content:
+              'Tjänsten stöder inte den webbläsare som du har i bruk. Uppdatera din webbläsare eller ladda ner en ny webbläsare via nedanstående länk.\n',
+          },
+          {
+            type: 'a',
+            content: 'Google Chrome',
+            href: 'https://www.google.com/chrome/',
+          },
+          {
+            type: 'a',
+            content: 'Firefox',
+            href: 'https://www.mozilla.org/sv-SE/firefox/new/',
+          },
+          {
+            type: 'a',
+            content: 'Microsoft Edge',
+            href: 'https://www.microsoft.com/en-us/windows/microsoft-edge',
+          },
+        ],
+      },
+    },
+  ],
   themeMap: {
     hsl: 'reittiopas',
     turku: '(turku|foli)',
@@ -665,6 +745,7 @@ export default {
     oulu: 'oulu',
     hameenlinna: 'hameenlinna',
     matka: 'matka',
+    salo: 'salo',
     rovaniemi: 'rovaniemi',
     kouvola: 'kouvola',
     tampere: 'tampere',
@@ -680,11 +761,13 @@ export default {
   imperialEnabled: false,
   // this flag when true enables imperial measurements  'feet/miles system'
 
+  showAllBusses: false,
+  showVehiclesOnStopPage: false,
   mapLayers: {
     featureMapping: {
       ticketSales: {},
     },
   },
 
-  routeTimetables: {},
+  timetables: {},
 };
